@@ -6,9 +6,17 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 
+/**
+ * Mapper class to map between entity and dto
+ */
 @Component
 public class OrderMapper {
 
+    /**
+     * Returns a DTO for Order Entity
+     * @param order
+     * @return
+     */
     public OrderDto toDto(Order order) {
         OrderDto dto = new OrderDto();
         dto.setCustomerName(order.getCustomerName());
@@ -18,6 +26,11 @@ public class OrderMapper {
         return dto;
     }
 
+    /**
+     * Returns an Entity for Order DTO
+     * @param orderDto
+     * @return
+     */
     public Order toEntity(OrderDto orderDto) {
         Order entity = new Order();
         entity.setCustomerName(orderDto.getCustomerName());

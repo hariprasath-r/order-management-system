@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
+/**
+ * Feign Proxy to communicate with order-item-service.
+ */
 @FeignClient(name = "order-item-service", url = "http://localhost:8080", path = "/orderitems")
 public interface OrderItemServiceProxy {
 

@@ -29,6 +29,11 @@ public class OrderService {
     @Autowired
     private OrderMapper mapper;
 
+    /**
+     * Retrieves Customer Order for a given Customer Name.
+     * @param customerName - Name of Customer
+     * @return - Customer Order
+     */
     public OrderDto getOrderForCustomerName(String customerName) {
         Optional<Order> orderOptional = orderRepository.findByCustomerName(customerName);
         if (!orderOptional.isPresent()) {
@@ -40,6 +45,10 @@ public class OrderService {
         return orderDto;
     }
 
+    /**
+     * Creates Customer Order based on the Order detail passed.
+     * @param orderDto - Order Detail
+     */
     @Transactional
     public void createOrder(OrderDto orderDto) {
         Optional<Order> existingOrder = orderRepository.findByCustomerName(orderDto.getCustomerName());
