@@ -28,30 +28,40 @@ public class OrderItemService {
     @Autowired
     private OrderItemMapper mapper;
 
-    public List<OrderItemDto> getAllOrderItemsForOrderId(Integer orderId) {
+    /**
+     * Retrieves Customer Order Items for a given Customer Name.
+     *
+     * @param orderId - Name of Customer
+     * @return - Customer Order Items
+     */
+    public List<OrderItemDto> getAllOrderItemsForOrderId(String orderId) {
         List<OrderItem> orderItems = orderItemRepository.findByOrderId(orderId)
-                .orElseThrow(() -> new OrderItemNotFoundException("Order Items not found for Order ID: " + orderId));
-
-        log.info("Order Items for Order ID: {}, {}", orderId, orderItems);
+                .orElseThrow(() -> new OrderItemNotFoundException("Order Items not found for ID: " + orderId));
+        log.info("Order Items for ID: {}, {}", orderId, orderItems);
         return orderItems.stream()
                 .map(item -> mapper.toDto(item))
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Creates Customer Order Items based for Customer.
+     *
+     * @param orderId      - Customer Name
+     * @param orderItemDto - Order Detail
+     */
     @Transactional
-    public void createOrderItemsForOrderId(Integer orderId, List<OrderItemDto> orderItemDto) {
+    public void createOrderItemsForOrderId(String orderId, List<OrderItemDto> orderItemDto) {
         Optional<List<OrderItem>> orderItemOptional = orderItemRepository.findByOrderId(orderId);
         if (orderItemOptional.isPresent()) {
-            throw new OrderConflictException("Order Items already exists for Order ID: " + orderId);
+            throw new OrderConflictException("Order Items already exists for ID: " + orderId);
         }
-
         List<OrderItem> orderItems = orderItemDto.stream()
                 .map(item -> mapper.toEntity(orderId, item))
                 .collect(Collectors.toList());
-
         try {
-            orderItems.stream().forEach(item -> orderItemRepository.save(item));
+            orderItems.forEach(item -> orderItemRepository.save(item));
         } catch (Exception e) {
+            log.error("createOrderItemsForOrderId: exception occurred.");
             throw new OrderItemException(e.getMessage());
         }
     }

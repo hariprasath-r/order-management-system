@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
-import springfox.documentation.service.VendorExtension;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -14,6 +13,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Swagger Configuration for Order Item Service
+ */
 @Configuration
 public class SwaggerConfig {
 
@@ -30,7 +32,7 @@ public class SwaggerConfig {
             DEFAULT_CONTACT,
             "GNU General Public License v3.0",
             "https://www.gnu.org/licenses/gpl-3.0.en.html",
-            new ArrayList<VendorExtension>());
+            new ArrayList<>());
 
     private static final Set<String> DEFAULT_PRODUCES_CONSUMES =
             new HashSet<>(Arrays.asList("application/json", "application.xml"));
@@ -38,7 +40,7 @@ public class SwaggerConfig {
     @Bean
     public Docket configureDocket() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("order-items")
+                .groupName("order-item-service")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("in.hp.java"))
                 .build()

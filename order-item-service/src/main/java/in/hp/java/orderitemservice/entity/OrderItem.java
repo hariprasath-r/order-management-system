@@ -12,7 +12,7 @@ public class OrderItem {
     @Id
     @GeneratedValue
     private Integer id;
-    private Integer orderId;
+    private String orderId;
     private String productCode;
     private String productName;
     private Integer quantity;
@@ -25,11 +25,11 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Integer getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(Integer orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 

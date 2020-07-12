@@ -42,7 +42,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<Object> handleOrderItemNotFoundException(OrderItemNotFoundException ex, WebRequest request) {
         ErrorDTO errorDTO = new ErrorDTO(
                 new Date().toString(), ex.getMessage(), request.getDescription(false));
-        log.error("Exception: ResourceNotFoundException [{}]", errorDTO);
+        log.error("Exception: OrderItemNotFoundException [{}]", errorDTO);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDTO);
     }
 
@@ -50,7 +50,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     public final ResponseEntity<Object> handleOrderConflictException(OrderConflictException ex, WebRequest request) {
         ErrorDTO errorDTO = new ErrorDTO(
                 new Date().toString(), ex.getMessage(), request.getDescription(false));
-        log.error("Exception: ResourceConflictException [{}]", errorDTO);
+        log.error("Exception: OrderConflictException [{}]", errorDTO);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDTO);
     }
 
