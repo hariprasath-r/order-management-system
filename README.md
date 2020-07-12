@@ -22,17 +22,30 @@ Order Item Service | http://localhost:8080/swagger-ui.html | http://localhost:80
 
 ### use jdbc url: jdbc:h2:mem:testdb for connecting to H2 and username is 'sa', no password needed
   
-Order Item:
+## Order Item:
   * Product Code
   * Product Name
   * Quantity
 
-Order:
+## Order:
   * Customer Name
-  * Order Date (yyyy-MM-dd)
+  * Order Date (yyyy-MM-dd) - cannot be in past
   * Shipping Address
   * Order Items
   * Total ($)
   
-
+## Sample Request:
+{
+  "customerName": "Hari",
+  "orderDate": "2020-12-31",
+  "orderItems": [
+    {
+      "productCode": "001",
+      "productName": "Laptop",
+      "quantity": 2
+    }
+  ],
+  "shippingAddress": "14, OMR, Chennai - 96",
+  "total": 100
+}
   
