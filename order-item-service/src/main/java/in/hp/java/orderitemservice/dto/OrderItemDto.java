@@ -1,10 +1,21 @@
 package in.hp.java.orderitemservice.dto;
 
+import io.swagger.annotations.ApiModel;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotEmpty;
+
+@ApiModel("OrderItem")
 public class OrderItemDto {
 
+    @NotEmpty(message = "Product Code should not be empty or null.")
     private String productCode;
+
+    @NotEmpty(message = "Product Name should not be empty or null.")
     private String productName;
-    private String quantity;
+
+    @Range(min = 1, message = "Minimum Quantity Should be One.")
+    private Integer quantity;
 
     public String getProductCode() {
         return productCode;
@@ -22,11 +33,11 @@ public class OrderItemDto {
         this.productName = productName;
     }
 
-    public String getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

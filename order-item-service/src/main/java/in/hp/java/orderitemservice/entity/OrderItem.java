@@ -15,7 +15,7 @@ public class OrderItem {
     private Integer orderId;
     private String productCode;
     private String productName;
-    private String quantity;
+    private Integer quantity;
 
     public Integer getId() {
         return id;
@@ -49,11 +49,11 @@ public class OrderItem {
         this.productName = productName;
     }
 
-    public String getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
