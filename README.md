@@ -16,7 +16,7 @@ Order Management System using two microservices
   
 ## Both services have swagger ui and h2 console is exposed.
 Service | Swagger URL | H2 URL
------------- | -------------
+------------ | ------------- | -------------
 Order Service | http://localhost:8082/swagger-ui.html | http://localhost:8082/h2-console
 Order Item Service | http://localhost:8080/swagger-ui.html | http://localhost:8080/h2-console
 
