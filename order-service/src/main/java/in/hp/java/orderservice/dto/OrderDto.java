@@ -1,6 +1,7 @@
 package in.hp.java.orderservice.dto;
 
 import io.swagger.annotations.ApiModel;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
@@ -19,9 +20,10 @@ public class OrderDto {
     @NotEmpty(message = "Shipping address should not be empty or null.")
     private String shippingAddress;
 
+    @NotEmpty
     private List<OrderItemDto> orderItems;
 
-    @NotEmpty(message = "total should not be empty or null.")
+    @Range(min = 1, message = "Total should not be zero.")
     private Double total;
 
     public String getCustomerName() {
