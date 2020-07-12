@@ -24,7 +24,8 @@ public class OrderItemServiceDelegate {
 
     /**
      * Communicates with order-item-service to create Order Items for a Customer.
-     * @param id = Customer Name
+     *
+     * @param id         = Customer Name
      * @param orderItems - Order Items
      */
     public void createOrderItems(String id, List<OrderItemDto> orderItems) {
@@ -46,6 +47,7 @@ public class OrderItemServiceDelegate {
 
     /**
      * Retrieves Order Items of a Customer from order-item-service.
+     *
      * @param id - Customer Name
      * @return - Order Items
      */
