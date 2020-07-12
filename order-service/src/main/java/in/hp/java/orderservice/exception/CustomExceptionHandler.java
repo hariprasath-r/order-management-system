@@ -1,5 +1,7 @@
 package in.hp.java.orderservice.exception;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -62,5 +64,25 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         );
         log.error("Exception: handleMethodArgumentNotValid [{}]", errorDTO);
         return new ResponseEntity<>(errorDTO, status);
+    }
+
+    @ExceptionHandler({FeignProxyException.class})
+    public final ResponseEntity<Object> handleHttpClientErrorException(
+            FeignProxyException ex, WebRequest request) {
+        ResponseEntity.BodyBuilder responseEntity = ResponseEntity.status(ex.getStatusCode());
+
+        String responseBodyAsString = ex.getBody();
+        ObjectMapper mapper = new ObjectMapper();
+        ErrorDTO errorDTO;
+        try {
+            errorDTO = mapper.readValue(responseBodyAsString, ErrorDTO.class);
+            log.error("Exception: handleHttpClientErrorException [{}]", errorDTO);
+            return responseEntity.body(errorDTO);
+        } catch (JsonProcessingException e) {
+            errorDTO = new ErrorDTO(new Date().toString(), e.getMessage(),
+                    request.getDescription(false));
+            log.error("Exception: handleHttpClientErrorException [{}]", errorDTO);
+            return responseEntity.body(errorDTO);
+        }
     }
 }

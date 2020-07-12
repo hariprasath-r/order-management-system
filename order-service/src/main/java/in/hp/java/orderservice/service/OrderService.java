@@ -1,5 +1,6 @@
 package in.hp.java.orderservice.service;
 
+import in.hp.java.orderservice.delegate.OrderItemServiceDelegate;
 import in.hp.java.orderservice.dto.OrderDto;
 import in.hp.java.orderservice.entity.Order;
 import in.hp.java.orderservice.exception.OrderConflictException;
@@ -23,6 +24,9 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
+    private OrderItemServiceDelegate orderItemServiceDelegate;
+
+    @Autowired
     private OrderMapper mapper;
 
     public OrderDto getOrderForCustomerName(String customerName) {
@@ -31,8 +35,10 @@ public class OrderService {
             throw new OrderNotFoundException("Order not found for Customer: " + customerName);
         }
 
-        Integer id = order.get().getId();
+        Integer orderId = order.get().getId();
         //TODO: call order item service
+        orderItemServiceDelegate.getOrderItems(orderId);
+
         return mapper.toDto(order.get());
     }
 
@@ -46,7 +52,10 @@ public class OrderService {
         Order order = mapper.toEntity(orderDto);
         Integer orderId = orderRepository.save(order).getId();
         log.info("Order ID for Customer {} is {}", orderDto.getCustomerName(), orderId);
-        return orderId;
+
         // TODO: call order item service
+        orderItemServiceDelegate.createOrderItems(orderId, orderDto.getOrderItems());
+
+        return orderId;
     }
 }
