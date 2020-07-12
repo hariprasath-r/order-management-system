@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
-import java.util.List;
 
 @Validated
 @RestController
@@ -21,9 +19,9 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping("/{customerName}")
-    public List<OrderDto> getOrderByCustomerName(@PathVariable String customerName) {
-        orderService.getOrderForCustomerName(customerName);
-        return Collections.emptyList();
+    public ResponseEntity<OrderDto> getOrderByCustomerName(@PathVariable String customerName) {
+        OrderDto orderForCustomerName = orderService.getOrderForCustomerName(customerName);
+        return ResponseEntity.ok(orderForCustomerName);
     }
 
     @PostMapping
