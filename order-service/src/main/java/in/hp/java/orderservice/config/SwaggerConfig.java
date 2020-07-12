@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
-import springfox.documentation.service.VendorExtension;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -26,14 +25,14 @@ public class SwaggerConfig {
             "");
 
     private static final ApiInfo DEFAULT_API_INFO = new ApiInfo(
-            "Order Item Service",
+            "Order Service",
             "Manages Creation and Retrieval of Orders.",
             "1.0",
             "urn:tos",
             DEFAULT_CONTACT,
             "GNU General Public License v3.0",
             "https://www.gnu.org/licenses/gpl-3.0.en.html",
-            new ArrayList<VendorExtension>());
+            new ArrayList<>());
 
     private static final Set<String> DEFAULT_PRODUCES_CONSUMES =
             new HashSet<>(Arrays.asList("application/json", "application.xml"));

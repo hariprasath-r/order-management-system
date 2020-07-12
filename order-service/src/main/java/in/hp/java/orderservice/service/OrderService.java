@@ -43,6 +43,7 @@ public class OrderService {
         Order order = orderOptional.get();
         OrderDto orderDto = mapper.toDto(order);
         orderDto.setOrderItems(orderItemServiceDelegate.getOrderItems(order.getCustomerName()));
+        log.info("Retrieved Order for {}.", customerName);
         return orderDto;
     }
 

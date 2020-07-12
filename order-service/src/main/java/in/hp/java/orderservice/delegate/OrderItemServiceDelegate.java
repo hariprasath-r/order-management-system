@@ -30,16 +30,20 @@ public class OrderItemServiceDelegate {
      */
     public void createOrderItems(String id, List<OrderItemDto> orderItems) {
         try {
+            log.info("Communicating with order-item-service to create Order Items.");
             orderItemService.createOrderItemsForOrderId(id, orderItems);
+            log.info("Order Items created successfully for {}.", id);
         } catch (RetryableException e) {
+            log.error("createOrderItems: Order Item Service unavailable");
             throw new FeignProxyException(HttpStatus.NOT_FOUND, "Order Item Service unavailable", "");
         } catch (FeignException e) {
             HttpStatus status = HttpStatus.resolve(e.status());
             status = Objects.nonNull(status) ? status : HttpStatus.INTERNAL_SERVER_ERROR;
-            log.error("Exception: createOrderItems Status: [{}]", status);
+            log.error("createOrderItems Status: [{}]", status);
             throw new FeignProxyException(status, e.getMessage(),
                     e.contentUTF8());
         } catch (Exception e) {
+            log.error("createOrderItems: exception occurred.");
             throw new FeignProxyException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Unable to communicate to Order Items Service", e.getMessage());
         }
@@ -53,8 +57,10 @@ public class OrderItemServiceDelegate {
      */
     public List<OrderItemDto> getOrderItems(String id) {
         try {
+            log.info("Communicating with order-item-service to retrieve Order Items.");
             return orderItemService.getAllOrderItemsForOrderId(id).getBody();
         } catch (RetryableException e) {
+            log.error("getOrderItems: Order Item Service unavailable");
             throw new FeignProxyException(HttpStatus.NOT_FOUND, "Order Item Service unavailable", "");
         } catch (FeignException e) {
             HttpStatus status = HttpStatus.resolve(e.status());
@@ -63,6 +69,7 @@ public class OrderItemServiceDelegate {
             throw new FeignProxyException(status, e.getMessage(),
                     e.contentUTF8());
         } catch (Exception e) {
+            log.error("getOrderItems: exception occurred.");
             throw new FeignProxyException(HttpStatus.INTERNAL_SERVER_ERROR,
                     "Unable to communicate to Order Items Service", e.getMessage());
         }
