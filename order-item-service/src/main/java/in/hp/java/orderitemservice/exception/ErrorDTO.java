@@ -1,7 +1,5 @@
 package in.hp.java.orderitemservice.exception;
 
-import lombok.ToString;
-
 public class ErrorDTO {
     private String timestamp;
     private String message;

@@ -2,7 +2,6 @@ package in.hp.java.orderitemservice.service;
 
 import in.hp.java.orderitemservice.dto.OrderItemDto;
 import in.hp.java.orderitemservice.entity.OrderItem;
-import in.hp.java.orderitemservice.exception.ErrorDTO;
 import in.hp.java.orderitemservice.exception.OrderItemException;
 import in.hp.java.orderitemservice.exception.OrderItemNotFoundException;
 import in.hp.java.orderitemservice.mapper.OrderItemMapper;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 

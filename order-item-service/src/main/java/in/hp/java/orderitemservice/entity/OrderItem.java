@@ -17,13 +17,21 @@ public class OrderItem {
     private String productName;
     private String quantity;
 
-    public Integer getId() { return id; }
+    public Integer getId() {
+        return id;
+    }
 
-    public void setId(Integer id) { this.id = id; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    public Integer getOrderId() { return orderId; }
+    public Integer getOrderId() {
+        return orderId;
+    }
 
-    public void setOrderId(Integer orderId) { this.orderId = orderId; }
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
 
     public String getProductCode() {
         return productCode;
@@ -45,7 +53,9 @@ public class OrderItem {
         return quantity;
     }
 
-    public void setQuantity(String quantity) { this.quantity = quantity; }
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
 
     @Override
     public String toString() {
