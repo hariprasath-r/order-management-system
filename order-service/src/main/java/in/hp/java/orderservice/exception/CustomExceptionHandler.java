@@ -79,7 +79,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             log.error("Exception: handleHttpClientErrorException [{}]", errorDTO);
             return responseEntity.body(errorDTO);
         } catch (JsonProcessingException e) {
-            errorDTO = new ErrorDTO(new Date().toString(), e.getMessage(),
+            errorDTO = new ErrorDTO(new Date().toString(), ex.getMessage(),
                     request.getDescription(false));
             log.error("Exception: handleHttpClientErrorException [{}]", errorDTO);
             return responseEntity.body(errorDTO);

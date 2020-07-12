@@ -30,32 +30,25 @@ public class OrderService {
     private OrderMapper mapper;
 
     public OrderDto getOrderForCustomerName(String customerName) {
-        Optional<Order> order = orderRepository.findByCustomerName(customerName);
-        if (!order.isPresent()) {
+        Optional<Order> orderOptional = orderRepository.findByCustomerName(customerName);
+        if (!orderOptional.isPresent()) {
             throw new OrderNotFoundException("Order not found for Customer: " + customerName);
         }
-
-        Integer orderId = order.get().getId();
-        //TODO: call order item service
-        orderItemServiceDelegate.getOrderItems(orderId);
-
-        return mapper.toDto(order.get());
+        Order order = orderOptional.get();
+        OrderDto orderDto = mapper.toDto(order);
+        orderDto.setOrderItems(orderItemServiceDelegate.getOrderItems(order.getCustomerName()));
+        return orderDto;
     }
 
     @Transactional
-    public Integer createOrder(OrderDto orderDto) {
+    public void createOrder(OrderDto orderDto) {
         Optional<Order> existingOrder = orderRepository.findByCustomerName(orderDto.getCustomerName());
         if (existingOrder.isPresent()) {
             throw new OrderConflictException("Customer Already has an Order.");
         }
-
         Order order = mapper.toEntity(orderDto);
-        Integer orderId = orderRepository.save(order).getId();
-        log.info("Order ID for Customer {} is {}", orderDto.getCustomerName(), orderId);
-
-        // TODO: call order item service
-        orderItemServiceDelegate.createOrderItems(orderId, orderDto.getOrderItems());
-
-        return orderId;
+        orderRepository.save(order).getId();
+        orderItemServiceDelegate.createOrderItems(orderDto.getCustomerName(), orderDto.getOrderItems());
+        log.info("Successfully created order for Customer {}", orderDto.getCustomerName());
     }
 }

@@ -12,11 +12,11 @@ import java.util.List;
 @FeignClient(name = "order-item-service", url = "http://localhost:8080", path = "/orderitems")
 public interface OrderItemServiceProxy {
 
-    @GetMapping("/{orderId}")
-    public ResponseEntity<List<OrderItemDto>> getAllOrderItemsForOrderId(@PathVariable Integer orderId);
+    @GetMapping("/{id}")
+    ResponseEntity<List<OrderItemDto>> getAllOrderItemsForOrderId(@PathVariable String id);
 
-    @PostMapping("/{orderId}")
-    public ResponseEntity<Object> createOrderItemsForOrderId(
-            @PathVariable Integer orderId,
+    @PostMapping("/{id}")
+    ResponseEntity<Object> createOrderItemsForOrderId(
+            @PathVariable String id,
             List<OrderItemDto> orderItemDto);
 }
