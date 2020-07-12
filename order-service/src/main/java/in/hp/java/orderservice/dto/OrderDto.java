@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.Valid;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class OrderDto {
 
     @ApiModelProperty(name = "Order Items", required = true)
     @NotEmpty
+    @Valid
     private List<OrderItemDto> orderItems;
 
     @ApiModelProperty(name = "Total", example = "100", required = true)
