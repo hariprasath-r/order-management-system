@@ -1,6 +1,7 @@
 package in.hp.java.orderitemservice.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,6 +10,7 @@ import javax.persistence.Table;
 public class OrderItem {
 
     @Id
+    @GeneratedValue
     private Integer id;
     private Integer orderId;
     private String productCode;
