@@ -18,10 +18,10 @@ import java.util.Date;
 @Slf4j
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({OrderItemException.class, Exception.class})
     public final ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
         ErrorDTO errorDTO = new ErrorDTO(
-                new Date().toString(), ex.getMessage(), request.getDescription(false));
+                new Date().toString(), ex.getMessage(), "Internal Error Occurred.");
         log.error("Exception: handleAllException [{}]", errorDTO);
         return new ResponseEntity<>(errorDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
