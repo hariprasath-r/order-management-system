@@ -9,16 +9,25 @@ import javax.persistence.Table;
 public class OrderItem {
 
     @Id
-    private Integer productCode;
+    private Integer id;
+    private Integer orderId;
+    private String productCode;
     private String productName;
     private String quantity;
-    private Integer orderId;
 
-    public Integer getProductCode() {
+    public Integer getId() { return id; }
+
+    public void setId(Integer id) { this.id = id; }
+
+    public Integer getOrderId() { return orderId; }
+
+    public void setOrderId(Integer orderId) { this.orderId = orderId; }
+
+    public String getProductCode() {
         return productCode;
     }
 
-    public void setProductCode(Integer productCode) {
+    public void setProductCode(String productCode) {
         this.productCode = productCode;
     }
 
@@ -36,17 +45,14 @@ public class OrderItem {
 
     public void setQuantity(String quantity) { this.quantity = quantity; }
 
-    public Integer getOrderId() { return orderId; }
-
-    public void setOrderId(Integer orderId) { this.orderId = orderId; }
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("OrderItem{");
-        sb.append("productCode='").append(productCode).append('\'');
+        sb.append("id=").append(id);
+        sb.append(", orderId=").append(orderId);
+        sb.append(", productCode=").append(productCode);
         sb.append(", productName='").append(productName).append('\'');
         sb.append(", quantity='").append(quantity).append('\'');
-        sb.append(", orderId='").append(orderId).append('\'');
         sb.append('}');
         return sb.toString();
     }
