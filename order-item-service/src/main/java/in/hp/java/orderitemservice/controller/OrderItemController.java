@@ -31,6 +31,7 @@ public class OrderItemController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<List<OrderItemDto>> getAllOrderItemsForCustomer(@PathVariable String id) {
+
         List<OrderItemDto> allOrderItemsForOrderId = orderItemService.getAllOrderItemsForOrderId(id);
         return ResponseEntity.ok(allOrderItemsForOrderId);
     }
@@ -46,7 +47,9 @@ public class OrderItemController {
             @PathVariable String id,
             @NotEmpty(message = "Order Items cannot be empty or null.")
             @RequestBody List<@Valid OrderItemDto> orderItemDto) {
+
         orderItemService.createOrderItemsForOrderId(id, orderItemDto);
+
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .buildAndExpand()
                 .toUri();
