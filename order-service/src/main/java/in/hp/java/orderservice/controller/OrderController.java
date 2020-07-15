@@ -30,6 +30,7 @@ public class OrderController {
     })
     @GetMapping("/{customerName}")
     public ResponseEntity<OrderDto> getOrderByCustomerName(@PathVariable String customerName) {
+
         OrderDto orderForCustomerName = orderService.getOrderForCustomerName(customerName);
         return ResponseEntity.ok(orderForCustomerName);
     }
@@ -44,7 +45,9 @@ public class OrderController {
     public ResponseEntity<Object> createOrder(
             @NotNull(message = "Order cannot be null.")
             @Valid @RequestBody OrderDto orderDto) {
+
         orderService.createOrder(orderDto);
+
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .buildAndExpand()
                 .toUri();
