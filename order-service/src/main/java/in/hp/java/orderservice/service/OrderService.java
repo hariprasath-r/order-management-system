@@ -62,7 +62,7 @@ public class OrderService {
         }
 
         Order order = mapper.toEntity(orderDto);
-        orderRepository.save(order).getId();
+        orderRepository.save(order);
         orderItemServiceDelegate.createOrderItems(orderDto.getCustomerName(), orderDto.getOrderItems());
         log.info("Successfully created order for Customer {}", orderDto.getCustomerName());
     }
