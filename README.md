@@ -13,6 +13,7 @@ Order Management System using two microservices
   * Implemented Global Exception Handlers for graceful handling or exceptions
   * Both services have input validations in place
   * Both services have REST endpoints exposed 
+  * Added Lombok for reduced BPC and increased readability
   
 ## Both services have swagger ui and h2 console is exposed.
 Service | Swagger URL | H2 URL
