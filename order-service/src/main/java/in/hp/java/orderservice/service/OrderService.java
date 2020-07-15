@@ -40,9 +40,11 @@ public class OrderService {
         if (!orderOptional.isPresent()) {
             throw new OrderNotFoundException("Order not found for Customer: " + customerName);
         }
+
         Order order = orderOptional.get();
         OrderDto orderDto = mapper.toDto(order);
         orderDto.setOrderItems(orderItemServiceDelegate.getOrderItems(order.getCustomerName()));
+
         log.info("Retrieved Order for {}.", customerName);
         return orderDto;
     }
@@ -58,6 +60,7 @@ public class OrderService {
         if (existingOrder.isPresent()) {
             throw new OrderConflictException("Customer Already has an Order.");
         }
+
         Order order = mapper.toEntity(orderDto);
         orderRepository.save(order).getId();
         orderItemServiceDelegate.createOrderItems(orderDto.getCustomerName(), orderDto.getOrderItems());

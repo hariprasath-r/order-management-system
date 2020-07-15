@@ -23,66 +23,72 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @ExceptionHandler({OrderException.class, Exception.class})
-    public final ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
-        ErrorDTO errorDTO = new ErrorDTO(
-                LocalDate.now().toString(), "Internal Error Occurred.", ex.getMessage());
-        log.error("Exception: handleAllException [{}]", errorDTO);
-        return new ResponseEntity<>(errorDTO, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler({ConstraintViolationException.class})
-    public final ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex,
-                                                                           WebRequest request) {
-        ErrorDTO errorDTO = new ErrorDTO(
-                LocalDate.now().toString(), "Input validation Failed.", ex.getMessage());
+    public final ResponseEntity<Object> handleConstraintViolationException(
+            ConstraintViolationException ex, WebRequest request) {
+
+        ErrorDTO errorDTO = new ErrorDTO(LocalDate.now().toString(), "Input validation Failed.", ex.getMessage());
+
         log.error("Exception: ConstraintViolationException [{}]", errorDTO);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
     }
 
     @ExceptionHandler({OrderNotFoundException.class})
     public final ResponseEntity<Object> handleOrderItemNotFoundException(OrderNotFoundException ex, WebRequest request) {
-        ErrorDTO errorDTO = new ErrorDTO(
-                LocalDate.now().toString(), ex.getMessage(), request.getDescription(false));
+        ErrorDTO errorDTO = new ErrorDTO(LocalDate.now().toString(),
+                ex.getMessage(), request.getDescription(false));
+
         log.error("Exception: OrderNotFoundException [{}]", errorDTO);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDTO);
     }
 
     @ExceptionHandler({OrderConflictException.class})
     public final ResponseEntity<Object> handleOrderConflictException(OrderConflictException ex, WebRequest request) {
-        ErrorDTO errorDTO = new ErrorDTO(
-                LocalDate.now().toString(), ex.getMessage(), request.getDescription(false));
+        ErrorDTO errorDTO = new ErrorDTO(LocalDate.now().toString(), ex.getMessage(), request.getDescription(false));
+
         log.error("Exception: OrderConflictException [{}]", errorDTO);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDTO);
+    }
+
+    @ExceptionHandler({FeignProxyException.class})
+    public final ResponseEntity<Object> handleHttpClientErrorException(FeignProxyException ex, WebRequest request) {
+        ResponseEntity.BodyBuilder responseEntity = ResponseEntity.status(ex.getStatusCode());
+
+        String responseBodyAsString = ex.getBody();
+        ObjectMapper mapper = new ObjectMapper();
+
+        ErrorDTO errorDTO;
+        try {
+            errorDTO = mapper.readValue(responseBodyAsString, ErrorDTO.class);
+
+            log.error("Exception: handleHttpClientErrorException [{}]", errorDTO);
+            return responseEntity.body(errorDTO);
+
+        } catch (JsonProcessingException e) {
+            errorDTO = new ErrorDTO(LocalDate.now().toString(), ex.getMessage(),
+                    request.getDescription(false));
+
+            log.error("Exception: handleHttpClientErrorException [{}]", errorDTO);
+            return responseEntity.body(errorDTO);
+        }
+    }
+
+    @ExceptionHandler({OrderException.class, Exception.class})
+    public final ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
+        ErrorDTO errorDTO = new ErrorDTO(LocalDate.now().toString(), "Internal Error Occurred.", ex.getMessage());
+
+        log.error("Exception: handleAllException [{}]", errorDTO);
+        return new ResponseEntity<>(errorDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ErrorDTO errorDTO = new ErrorDTO(
-                LocalDate.now().toString(), "Validation failed for input.", ex.getBindingResult().toString()
-        );
+
+        ErrorDTO errorDTO = new ErrorDTO(LocalDate.now().toString(), "Validation failed for input.",
+                ex.getBindingResult().toString());
+
         log.error("Exception: handleMethodArgumentNotValid [{}]", errorDTO);
         return new ResponseEntity<>(errorDTO, status);
-    }
-
-    @ExceptionHandler({FeignProxyException.class})
-    public final ResponseEntity<Object> handleHttpClientErrorException(
-            FeignProxyException ex, WebRequest request) {
-        ResponseEntity.BodyBuilder responseEntity = ResponseEntity.status(ex.getStatusCode());
-
-        String responseBodyAsString = ex.getBody();
-        ObjectMapper mapper = new ObjectMapper();
-        ErrorDTO errorDTO;
-        try {
-            errorDTO = mapper.readValue(responseBodyAsString, ErrorDTO.class);
-            log.error("Exception: handleHttpClientErrorException [{}]", errorDTO);
-            return responseEntity.body(errorDTO);
-        } catch (JsonProcessingException e) {
-            errorDTO = new ErrorDTO(LocalDate.now().toString(), ex.getMessage(),
-                    request.getDescription(false));
-            log.error("Exception: handleHttpClientErrorException [{}]", errorDTO);
-            return responseEntity.body(errorDTO);
-        }
     }
 }
