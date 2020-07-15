@@ -35,8 +35,10 @@ public class OrderItemService {
      * @return - Customer Order Items
      */
     public List<OrderItemDto> getAllOrderItemsForOrderId(String orderId) {
-        List<OrderItem> orderItems = orderItemRepository.findByOrderId(orderId)
+        List<OrderItem> orderItems = orderItemRepository
+                .findByOrderId(orderId)
                 .orElseThrow(() -> new OrderItemNotFoundException("Order Items not found for: " + orderId));
+
         log.info("Order Items for ID: {}, {}", orderId, orderItems);
         return orderItems.stream()
                 .map(item -> mapper.toDto(item))
@@ -52,12 +54,14 @@ public class OrderItemService {
     @Transactional
     public void createOrderItemsForOrderId(String orderId, List<OrderItemDto> orderItemDto) {
         Optional<List<OrderItem>> orderItemOptional = orderItemRepository.findByOrderId(orderId);
+
         if (orderItemOptional.isPresent()) {
             throw new OrderConflictException("Order Items already exists for: " + orderId);
         }
         List<OrderItem> orderItems = orderItemDto.stream()
                 .map(item -> mapper.toEntity(orderId, item))
                 .collect(Collectors.toList());
+
         try {
             orderItems.forEach(item -> orderItemRepository.save(item));
         } catch (Exception e) {
